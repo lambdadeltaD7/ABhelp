@@ -117,45 +117,43 @@ def chisq_hom(data: array_like):
     return pval
 
 
-    
+if name=="__main__":
+    data = [
+    [38.7, 39.2, 40.1, 38.9],
+    [41.9, 42.3, 41.3],
+    [40.8, 41.2, 39.5, 38.9, 40.3],
+    ]
+
+    # data = [
+    # [5, 9, 6, 8],
+    # [11, 13, 10, 12],
+    # [10, 6, 9, 9],
+    # ]
 
 
-data = [
-[38.7, 39.2, 40.1, 38.9],
-[41.9, 42.3, 41.3],
-[40.8, 41.2, 39.5, 38.9, 40.3],
-]
+    # data = [
+    #   [0,1,1,0],
+    #   [1,1,1,0],
+    #   [1,1,1,1,1,0,0,0]  
+    # ]
 
-# data = [
-# [5, 9, 6, 8],
-# [11, 13, 10, 12],
-# [10, 6, 9, 9],
-# ]
+    # print(chisq_hom(data))
+
+    # anova_p, var_est, n, k = anova(data)
 
 
-# data = [
-#   [0,1,1,0],
-#   [1,1,1,0],
-#   [1,1,1,1,1,0,0,0]  
-# ]
+    # print(ttest(
+    #      np.array(data[1]),
+    #      np.array(data[0]),
+    #      var_est,
+    #      n,
+    #      k
+    #      ))
 
-# print(chisq_hom(data))
-
-anova_p, var_est, n, k = anova(data)
-
-
-print(ttest(
-     np.array(data[1]),
-     np.array(data[0]),
-     var_est,
-     n,
-     k
-     ))
-
-# p1=0.43
-# p2=0.4
-# n=1000
-# pval,(l,r) = bstest(np.random.binomial(1,p1,n),
-#                     np.random.binomial(1,p2,n))
-# print(pval)
-# print(l,r)
+    p1=0.43
+    p2=0.4
+    n=100
+    pval,(l,r) = bstest(np.random.binomial(1,p1,n),
+                        np.random.binomial(1,p2,n))
+    print(pval)
+    print(l,r)
