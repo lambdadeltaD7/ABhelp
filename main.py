@@ -3,7 +3,8 @@ import pandas as pd
 import scipy.stats as stats
 from typing import *
 
-def ttest(x, y, var, sample_size, cnt_groups):
+# t-test after anova based on pooled variance 
+def ttest(x, y, var, sample_size, cnt_groups, alpha=0.05):
     std = np.sqrt(var)
     n1 = len(x)
     n2 = len(y)
@@ -20,9 +21,15 @@ def ttest(x, y, var, sample_size, cnt_groups):
     else:
         pval = 2 * stats.t.cdf(t, df)
 
-    return pval
 
+    q = (-1) * stats.t.ppf(alpha / 2, df)
+    half_len = q * std * np.sqrt(1 / n1 + 1 / n2)
+    l = diff - half_len
+    r = diff + half_len
 
+    return pval, (l, r)
+
+# big sample test for difference in means
 # only for bernoulli
 def bstest(x, y, alpha=0.05):
     if len(x) != len(y):
@@ -112,11 +119,11 @@ def chisq_hom(data: array_like):
     
 
 
-# data = [
-# [38.7, 39.2, 40.1, 38.9],
-# [41.9, 42.3, 41.3],
-# [40.8, 41.2, 39.5, 38.9, 40.3],
-# ]
+data = [
+[38.7, 39.2, 40.1, 38.9],
+[41.9, 42.3, 41.3],
+[40.8, 41.2, 39.5, 38.9, 40.3],
+]
 
 # data = [
 # [5, 9, 6, 8],
@@ -125,24 +132,24 @@ def chisq_hom(data: array_like):
 # ]
 
 
-data = [
-  [0,1,1,0],
-  [1,1,1,0],
-  [1,1,1,1,1,0,0,0]  
-]
+# data = [
+#   [0,1,1,0],
+#   [1,1,1,0],
+#   [1,1,1,1,1,0,0,0]  
+# ]
 
-print(chisq_hom(data))
+# print(chisq_hom(data))
 
-#anova_p, var_est, n, k = anova(data)
+anova_p, var_est, n, k = anova(data)
 
 
-# print(ttest(
-#      np.array(data[1]),
-#      np.array(data[2]),
-#      var_est,
-#      n,
-#      k
-#      ))
+print(ttest(
+     np.array(data[1]),
+     np.array(data[0]),
+     var_est,
+     n,
+     k
+     ))
 
 # p1=0.43
 # p2=0.4
