@@ -23,6 +23,7 @@ def ttest(x, y, var, sample_size, cnt_groups):
     return pval
 
 
+# only for bernoulli
 def bstest(x, y, alpha=0.05):
     if len(x) != len(y):
         print("samples should have equal size")
@@ -32,10 +33,10 @@ def bstest(x, y, alpha=0.05):
     ym = y.mean()
     diff = xm - ym
 
-    var_x = np.var(x, ddof=1)
-    var_y = np.var(y, ddof=1)
+    var_x = xm * (1 - xm)
+    var_y = ym * (1 - ym)
 
-    z_stat = sqrt(n) * diff / sqrt(var_x + var_y)
+    z_stat = np.sqrt(n) * diff / np.sqrt(var_x + var_y)
     if z_stat >= 0:
         pval = 2 * (1 - stats.norm.cdf(z_stat))
     else:
@@ -43,7 +44,7 @@ def bstest(x, y, alpha=0.05):
 
     
     q = (-1) * stats.norm.ppf(alpha / 2)
-    half_len = q * sqrt(var_x + var_y) / sqrt(n)
+    half_len = q * np.sqrt(var_x + var_y) / np.sqrt(n)
     l = diff - half_len
     r = diff + half_len
     
@@ -98,13 +99,21 @@ def chisq_indep():
 # ]
 
 
-anova_p, var_est, n, k = anova(data)
+#anova_p, var_est, n, k = anova(data)
 
 
-print(ttest(
-     np.array(data[1]),
-     np.array(data[2]),
-     var_est,
-     n,
-     k
-     ))
+# print(ttest(
+#      np.array(data[1]),
+#      np.array(data[2]),
+#      var_est,
+#      n,
+#      k
+#      ))
+
+p1=0.43
+p2=0.4
+n=1000
+pval,(l,r) = bstest(np.random.binomial(1,p1,n),
+                    np.random.binomial(1,p2,n))
+print(pval)
+print(l,r)
