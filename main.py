@@ -35,15 +35,16 @@ def bstest(x, y, alpha=0.05):
     if len(x) != len(y):
         print("samples should have equal size")
 
-    n = len(x)
+    nx = len(x)
+    ny = len(y)
     xm = x.mean()
     ym = y.mean()
     diff = xm - ym
 
-    var_x = xm * (1 - xm)
-    var_y = ym * (1 - ym)
+    p_est = (sum(x) + sum(y)) / (nx + ny)
+    var_pooled = p_est * (1 - p_est)
 
-    z_stat = np.sqrt(n) * diff / np.sqrt(var_x + var_y)
+    z_stat =  diff / ( np.sqrt(var_pooled) * np.sqrt(1 / nx + 1 / ny) )
     if z_stat >= 0:
         pval = 2 * (1 - stats.norm.cdf(z_stat))
     else:
@@ -51,7 +52,7 @@ def bstest(x, y, alpha=0.05):
 
     
     q = (-1) * stats.norm.ppf(alpha / 2)
-    half_len = q * np.sqrt(var_x + var_y) / np.sqrt(n)
+    half_len = q * np.sqrt(xm * (1 - xm) / nx + ym * (1 - ym) / ny)
     l = diff - half_len
     r = diff + half_len
     
