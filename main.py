@@ -80,8 +80,34 @@ def anova(data: array_like):
     return pval, var_estimator, n, k
 
 
-def chisq_indep():
-    pass
+# only for bernoulli
+def chisq_hom(data: array_like):
+    cnt_groups = len(data) 
+
+    # table[i] = (cnt0, cnt1) 
+    table = [ [len(data[i]) - sum(data[i]), sum(data[i])] for i in range(cnt_groups) ]
+    table = np.array(table) # shape = (cnt_groups, 2)
+
+    cnt_total = table.sum()
+    category_proportions = table.sum(axis=0) / cnt_total
+
+    group_sizes = table.sum(axis=1)
+
+    chisq_stat = 0
+    for i in range(cnt_groups):
+        for j in range(2):
+            #if category_proportions[j] == 0:
+            #    continue
+            expected = group_sizes[i] * category_proportions[j]
+            observed = table[i][j]
+            chisq_stat += ((observed - expected) ** 2) / expected
+
+    df = (cnt_groups - 1) * (2 - 1)
+
+    pval = 1 - stats.chi2.cdf(chisq_stat, df)
+
+    return pval
+
 
     
 
@@ -99,6 +125,14 @@ def chisq_indep():
 # ]
 
 
+data = [
+  [0,1,1,0],
+  [1,1,1,0],
+  [1,1,1,1,1,0,0,0]  
+]
+
+print(chisq_hom(data))
+
 #anova_p, var_est, n, k = anova(data)
 
 
@@ -110,10 +144,10 @@ def chisq_indep():
 #      k
 #      ))
 
-p1=0.43
-p2=0.4
-n=1000
-pval,(l,r) = bstest(np.random.binomial(1,p1,n),
-                    np.random.binomial(1,p2,n))
-print(pval)
-print(l,r)
+# p1=0.43
+# p2=0.4
+# n=1000
+# pval,(l,r) = bstest(np.random.binomial(1,p1,n),
+#                     np.random.binomial(1,p2,n))
+# print(pval)
+# print(l,r)
