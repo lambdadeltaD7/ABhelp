@@ -1,3 +1,4 @@
+### This readme was written entirely by LLM but LLM didn't write a single line of code in the project (for better or worse).
 # 🚀 ABhelp – Statistical Analysis Toolkit for A/B Testing & Hypothesis Testing
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
