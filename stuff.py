@@ -32,8 +32,6 @@ def ttest(x, y, var, sample_size, cnt_groups, alpha=0.05):
 # big sample test for difference in means
 # only for bernoulli
 def bstest(x, y, alpha=0.05):
-    if len(x) != len(y):
-        print("samples should have equal size")
 
     nx = len(x)
     ny = len(y)
@@ -79,6 +77,7 @@ def anova(data: array_like):
     k = x.shape[1] # cnt_groups
     dfn = k - 1
     dfd = n - k
+    
     f_stat = (outer_var / dfn) / (inner_var / dfd)
 
     pval = 1 - stats.f.cdf(f_stat, dfn, dfd)
@@ -117,43 +116,6 @@ def chisq_hom(data: array_like):
     return pval
 
 
-if name=="__main__":
-    data = [
-    [38.7, 39.2, 40.1, 38.9],
-    [41.9, 42.3, 41.3],
-    [40.8, 41.2, 39.5, 38.9, 40.3],
-    ]
-
-    # data = [
-    # [5, 9, 6, 8],
-    # [11, 13, 10, 12],
-    # [10, 6, 9, 9],
-    # ]
-
-
-    # data = [
-    #   [0,1,1,0],
-    #   [1,1,1,0],
-    #   [1,1,1,1,1,0,0,0]  
-    # ]
-
-    # print(chisq_hom(data))
-
-    # anova_p, var_est, n, k = anova(data)
-
-
-    # print(ttest(
-    #      np.array(data[1]),
-    #      np.array(data[0]),
-    #      var_est,
-    #      n,
-    #      k
-    #      ))
-
-    p1=0.43
-    p2=0.4
-    n=100
-    pval,(l,r) = bstest(np.random.binomial(1,p1,n),
-                        np.random.binomial(1,p2,n))
-    print(pval)
-    print(l,r)
+if __name__ == "__main__":
+    exit(0)
+    
